@@ -10,7 +10,7 @@
   "binary": {
     "module_name": "clustalo",
     "module_path": "./lib/",
-    "host": "https://node-lambda.s3-us-west-1.amazonaws.com",
+    "host": "https://node-lambda.s3-us-east-1.amazonaws.com",
     "remote_path" : "./{name}/v{version}"
   },
   "author": "",
