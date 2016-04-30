@@ -20,7 +20,7 @@ before_install:
   - tar -zxvf clustal-omega-1.2.1.tar.gz
   - cd clustal-omega-1.2.1
   - ./configure --with-pic --with-openmp
-  - make clean && make && make install
+  - make clean && make && sudo make install
   # get commit message
   - COMMIT_MESSAGE=$(git show -s --format=%B $TRAVIS_COMMIT | tr -d '\n')
   # put local node-pre-gyp on PATH
