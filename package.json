@@ -4,7 +4,13 @@
   "description": "Wrapper for clustal alignment",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/mocha",
+    "install" : "node-pre-gyp install --fallback-to-build"
+  },
+  "binary": {
+    "module_name": "clustalo",
+    "module_path": "./lib/",
+    "host": "https://node-lambda.s3-us-west-1.amazonaws.com"
   },
   "author": "",
   "license": "ISC",
