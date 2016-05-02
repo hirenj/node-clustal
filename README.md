@@ -14,7 +14,7 @@ npm install hirenj/node-clustal
 
 ## About Clustal omega
 
-All the hard work for doing sequence alignment comes from [http://www.clustal.org/omega/](Clustal Omega).
+All the hard work for doing sequence alignment comes from [Clustal Omega](http://www.clustal.org/omega/).
 
 
 ## Building binaries for your own platform
