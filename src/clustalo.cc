@@ -12,6 +12,7 @@ extern "C" {
 namespace clustal {
 
 using v8::FunctionCallbackInfo;
+using v8::Exception;
 using v8::Isolate;
 using v8::Local;
 using v8::Object;
@@ -54,24 +55,70 @@ void Clustalo(const FunctionCallbackInfo<Value>& args) {
     int maxGuidetreeIterations = rAlnOpts.iMaxGuidetreeIterations;
     int maxHMMIterations = rAlnOpts.iMaxHMMIterations;
     int numThreads = 1;
+    bool useMbed = rAlnOpts.bUseMbed;
+    bool useMbedForIteration = rAlnOpts.bUseMbedForIteration;
+
+    if (args.Length() < 2) {
+        isolate->ThrowException(Exception::TypeError(
+        String::NewFromUtf8(isolate, "Wrong number of arguments")));
+        return;
+    }
+
+    Local<Object> options = args[1]->ToObject();
+
+    Local<String> options_key = String::NewFromUtf8(isolate,"numIterations");
+    if (options->Has(options_key) && options->Get(options_key)->IsNumber() ) {
+        int value = options->Get(options_key)->IntegerValue();
+        numCombinedIterations = value;
+    }
+
+    options_key = String::NewFromUtf8(isolate,"maxGuidetreeIterations");
+    if (options->Has(options_key) && options->Get(options_key)->IsNumber() ) {
+        int value = options->Get(options_key)->IntegerValue();
+        maxGuidetreeIterations = value;
+    }
+
+    options_key = String::NewFromUtf8(isolate,"maxHMMIterations");
+    if (options->Has(options_key) && options->Get(options_key)->IsNumber() ) {
+        int value = options->Get(options_key)->IntegerValue();
+        maxHMMIterations = value;
+    }
+
+    options_key = String::NewFromUtf8(isolate,"useMbed");
+    if (options->Has(options_key) && options->Get(options_key)->IsBoolean() ) {
+        bool value = options->Get(options_key)->BooleanValue();
+        useMbed = value;
+    }
+
+    options_key = String::NewFromUtf8(isolate,"useMbedForIteration");
+    if (options->Has(options_key) && options->Get(options_key)->IsBoolean() ) {
+        bool value = options->Get(options_key)->BooleanValue();
+        useMbedForIteration = value;
+    }
+
+    options_key = String::NewFromUtf8(isolate,"threads");
+    if (options->Has(options_key) && options->Get(options_key)->IsNumber() ) {
+        int value = options->Get(options_key)->IntegerValue();
+        numThreads = value;
+    }
 
     InitClustalOmega(numThreads);
+
+
 
     prMSeq->seqtype = SEQTYPE_UNKNOWN;
 
 
-    // Get arguments
-
-    // rAlnOpts.bUseMbed = 1;// TRUE or FALSE;
-    // rAlnOpts.bUseMbedForIteration = 1;// TRUE or FALSE;
-    // rAlnOpts.iNumIterations = numCombinedIterations;
-    // rAlnOpts.iMaxGuidetreeIterations = maxGuidetreeIterations;
-    // rAlnOpts.iMaxHMMIterations = maxHMMIterations;
+    rAlnOpts.bUseMbed = useMbed;
+    rAlnOpts.bUseMbedForIteration = useMbedForIteration;
+    rAlnOpts.iNumIterations = numCombinedIterations;
+    rAlnOpts.iMaxGuidetreeIterations = maxGuidetreeIterations;
+    rAlnOpts.iMaxHMMIterations = maxHMMIterations;
 
     Local<Object> sequences = args[0]->ToObject();
     Local<Array> seq_names = sequences->GetOwnPropertyNames();
 
-    for (int i = 0; i < seq_names->Length(); ++i) {
+    for (unsigned int i = 0; i < seq_names->Length(); ++i) {
         Local<Value> key = seq_names->Get(i);
         Local<Value> sequence = sequences->Get(key);
 
@@ -80,7 +127,9 @@ void Clustalo(const FunctionCallbackInfo<Value>& args) {
             String::Utf8Value utf8_sequence(sequence);
             AddSeq(&prMSeq, *utf8_key,*utf8_sequence);
         } else {
-            // Throw an error or something
+            isolate->ThrowException(Exception::TypeError(
+        String::NewFromUtf8(isolate, "Invalid sequence")));
+            return;
         }
     }
 
@@ -88,6 +137,8 @@ void Clustalo(const FunctionCallbackInfo<Value>& args) {
     rv = Align(prMSeq, NULL, &rAlnOpts);
 
     if (rv) {
+        isolate->ThrowException(Exception::Error(
+        String::NewFromUtf8(isolate, "Error running clustal omega")));
         // Throw Exception
         return;
     }
