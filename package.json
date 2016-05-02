@@ -13,6 +13,10 @@
     "host": "https://node-lambda.s3.amazonaws.com",
     "remote_path" : "./{name}/v{version}"
   },
+  "dependencies" : {
+    "node-pre-gyp" : "^0.6.x"
+  },
+  "bundledDependencies" : ["node-pre-gyp"],
   "author": "",
   "license": "ISC",
   "devDependencies": {
