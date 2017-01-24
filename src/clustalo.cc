@@ -40,7 +40,7 @@ void Clustalo(const FunctionCallbackInfo<Value>& args) {
     SetDefaultAlnOpts(&rAlnOpts);
 
     // Optional
-    // int seqtype = SEQTYPE_PROTEIN;
+    int seqtype = SEQTYPE_PROTEIN;
 
     // EXPORT
     // SEQTYPE_DNA
@@ -102,11 +102,29 @@ void Clustalo(const FunctionCallbackInfo<Value>& args) {
         numThreads = value;
     }
 
+    options_key = String::NewFromUtf8(isolate,"sequenceType");
+    if (options->Has(options_key) && options->Get(options_key)->IsNumber() ) {
+        int value = options->Get(options_key)->IntegerValue();
+        switch(value)
+        {
+            case 0:
+                seqtype = SEQTYPE_UNKNOWN;
+                break;
+            case 1:
+                seqtype = SEQTYPE_PROTEIN;
+                break;
+            case 2:
+                seqtype = SEQTYPE_RNA;
+                break;
+            case 3:
+                seqtype = SEQTYPE_DNA;
+                break;
+        }
+    }
+
     InitClustalOmega(numThreads);
 
-
-
-    prMSeq->seqtype = SEQTYPE_UNKNOWN;
+    prMSeq->seqtype = seqtype;
 
 
     rAlnOpts.bUseMbed = useMbed;
