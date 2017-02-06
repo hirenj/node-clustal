@@ -1,6 +1,6 @@
 {
   "name": "node-clustal",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Wrapper for clustal alignments",
   "main": "index.js",
   "scripts": {
