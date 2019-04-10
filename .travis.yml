@@ -17,9 +17,9 @@ addons:
     - g++-4.8
 before_install:
 - sudo apt-get install --force-yes libargtable2-dev
-- curl -O 'https://node-lambda.s3.amazonaws.com/clustalo/clustal-omega-1.2.1.tar.gz'
-- tar -zxvf clustal-omega-1.2.1.tar.gz
-- cd clustal-omega-1.2.1
+- curl -O 'https://node-lambda.s3.amazonaws.com/clustalo/clustal-omega-1.2.4.tar.gz'
+- tar -zxvf clustal-omega-1.2.4.tar.gz
+- cd clustal-omega-1.2.4
 - ./configure --with-pic --with-openmp
 - make clean && make && sudo make install
 - cd ..

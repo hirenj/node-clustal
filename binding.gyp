@@ -5,8 +5,8 @@
       "sources": [ "src/clustalo.cc" ],
       'conditions' : [
       ['OS=="mac"', {
-        'include_dirs' : [ './clustal-omega-1.2.1/src/' ],
-        "libraries": [ "../clustal-omega-1.2.1/src/.libs/libclustalo.a" ],
+        'include_dirs' : [ './clustal-omega-1.2.4/src/' ],
+        "libraries": [ "../clustal-omega-1.2.4/src/.libs/libclustalo.a" ],
       }],
       ['OS=="linux"', {
         'include_dirs' : [ '/usr/local/include/clustalo' ],
