@@ -1,22 +1,24 @@
 {
   "name": "node-clustal",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Wrapper for clustal alignments",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
-    "install" : "node-pre-gyp install --fallback-to-build"
+    "install": "node-pre-gyp install --fallback-to-build"
   },
   "binary": {
     "module_name": "clustalo",
     "module_path": "./lib/",
     "host": "https://node-lambda.s3.amazonaws.com",
-    "remote_path" : "./{name}/v{version}"
+    "remote_path": "./{name}/v{version}"
   },
-  "dependencies" : {
-    "node-pre-gyp" : "^0.6.x"
+  "dependencies": {
+    "node-pre-gyp": "^0.6.x"
   },
-  "bundledDependencies" : ["node-pre-gyp"],
+  "bundledDependencies": [
+    "node-pre-gyp"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {

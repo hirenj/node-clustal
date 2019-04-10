@@ -25,8 +25,8 @@ before_install:
 - brew update
 - brew install argtable
 - curl -O 'https://node-lambda.s3.amazonaws.com/clustalo/clustal-omega-1.2.1.tar.gz'
-- tar -zxvf clustal-omega-1.2.1.tar.gz
-- cd clustal-omega-1.2.1
+- tar -zxvf clustal-omega-1.2.4.tar.gz
+- cd clustal-omega-1.2.4
 - ./configure --with-pic --with-openmp
 - make clean && make && sudo make install
 - cd ..
