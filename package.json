@@ -2,6 +2,7 @@
   "name": "node-clustal",
   "version": "0.0.5",
   "description": "Wrapper for clustal alignments",
+
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
