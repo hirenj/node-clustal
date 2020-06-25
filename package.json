@@ -17,9 +17,6 @@
     "node-addon-api": "*",
     "node-pre-gyp": "^0.6.39"
   },
-  "bundledDependencies": [
-    "node-pre-gyp"
-  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
