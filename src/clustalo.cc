@@ -1,6 +1,5 @@
 // clustalo.cc
-#include <node.h>
-
+#include <napi.h>
 
 // Wrapping the C library here
 // is critical for getting the
@@ -11,17 +10,9 @@ extern "C" {
 
 namespace clustal {
 
-using v8::FunctionCallbackInfo;
-using v8::Exception;
-using v8::Isolate;
-using v8::Local;
-using v8::Object;
-using v8::String;
-using v8::Value;
-using v8::Array;
+Napi::Value Clustalo(const Napi::CallbackInfo& args) {
 
-void Clustalo(const FunctionCallbackInfo<Value>& args) {
-    Isolate* isolate = args.GetIsolate();
+    Napi::Env env = args.Env();
 
     // It doesn't look like this is very important
     // but this line here is really important, otherwise
@@ -58,53 +49,55 @@ void Clustalo(const FunctionCallbackInfo<Value>& args) {
     bool useMbed = rAlnOpts.bUseMbed;
     bool useMbedForIteration = rAlnOpts.bUseMbedForIteration;
 
+    // NODE - converted
+
     if (args.Length() < 2) {
-        isolate->ThrowException(Exception::TypeError(
-        String::NewFromUtf8(isolate, "Wrong number of arguments")));
-        return;
+        Napi::TypeError::New(env, "Wrong number of arguments")
+            .ThrowAsJavaScriptException();
+        return env.Null();
     }
 
-    Local<Object> options = args[1]->ToObject();
+    Napi::Object options = args[1].As<Napi::Object>();
 
-    Local<String> options_key = String::NewFromUtf8(isolate,"numIterations");
-    if (options->Has(options_key) && options->Get(options_key)->IsNumber() ) {
-        int value = options->Get(options_key)->IntegerValue();
+    Napi::String options_key = Napi::String::New(env,"numIterations");
+    if (options.Has(options_key) && options.Get(options_key).IsNumber() ) {
+        int value = options.Get(options_key).As<Napi::Number>().Int32Value();
         numCombinedIterations = value;
     }
 
-    options_key = String::NewFromUtf8(isolate,"maxGuidetreeIterations");
-    if (options->Has(options_key) && options->Get(options_key)->IsNumber() ) {
-        int value = options->Get(options_key)->IntegerValue();
+    options_key = Napi::String::New(env,"maxGuidetreeIterations");
+    if (options.Has(options_key) && options.Get(options_key).IsNumber() ) {
+        int value = options.Get(options_key).As<Napi::Number>().Int32Value();
         maxGuidetreeIterations = value;
     }
 
-    options_key = String::NewFromUtf8(isolate,"maxHMMIterations");
-    if (options->Has(options_key) && options->Get(options_key)->IsNumber() ) {
-        int value = options->Get(options_key)->IntegerValue();
+    options_key = Napi::String::New(env,"maxHMMIterations");
+    if (options.Has(options_key) && options.Get(options_key).IsNumber() ) {
+        int value = options.Get(options_key).As<Napi::Number>().Int32Value();
         maxHMMIterations = value;
     }
 
-    options_key = String::NewFromUtf8(isolate,"useMbed");
-    if (options->Has(options_key) && options->Get(options_key)->IsBoolean() ) {
-        bool value = options->Get(options_key)->BooleanValue();
+    options_key = Napi::String::New(env,"useMbed");
+    if (options.Has(options_key) && options.Get(options_key).IsBoolean() ) {
+        bool value = options.Get(options_key).As<Napi::Boolean>().Value();
         useMbed = value;
     }
 
-    options_key = String::NewFromUtf8(isolate,"useMbedForIteration");
-    if (options->Has(options_key) && options->Get(options_key)->IsBoolean() ) {
-        bool value = options->Get(options_key)->BooleanValue();
+    options_key = Napi::String::New(env,"useMbedForIteration");
+    if (options.Has(options_key) && options.Get(options_key).IsBoolean() ) {
+        bool value = options.Get(options_key).As<Napi::Boolean>().Value();
         useMbedForIteration = value;
     }
 
-    options_key = String::NewFromUtf8(isolate,"threads");
-    if (options->Has(options_key) && options->Get(options_key)->IsNumber() ) {
-        int value = options->Get(options_key)->IntegerValue();
+    options_key = Napi::String::New(env,"threads");
+    if (options.Has(options_key) && options.Get(options_key).IsNumber() ) {
+        int value = options.Get(options_key).As<Napi::Number>().Int32Value();
         numThreads = value;
     }
 
-    options_key = String::NewFromUtf8(isolate,"sequenceType");
-    if (options->Has(options_key) && options->Get(options_key)->IsNumber() ) {
-        int value = options->Get(options_key)->IntegerValue();
+    options_key = Napi::String::New(env,"sequenceType");
+    if (options.Has(options_key) && options.Get(options_key).IsNumber() ) {
+        int value = options.Get(options_key).As<Napi::Number>().Int32Value();
         switch(value)
         {
             case 0:
@@ -133,49 +126,53 @@ void Clustalo(const FunctionCallbackInfo<Value>& args) {
     rAlnOpts.iMaxGuidetreeIterations = maxGuidetreeIterations;
     rAlnOpts.iMaxHMMIterations = maxHMMIterations;
 
-    Local<Object> sequences = args[0]->ToObject();
-    Local<Array> seq_names = sequences->GetOwnPropertyNames();
+    // NODE - converted
+    Napi::Object sequences = args[0].As<Napi::Object>();
+    Napi::Array seq_names = sequences.GetPropertyNames();
 
-    for (unsigned int i = 0; i < seq_names->Length(); ++i) {
-        Local<Value> key = seq_names->Get(i);
-        Local<Value> sequence = sequences->Get(key);
+    // NODE - converted
+    for (unsigned int i = 0; i < seq_names.Length(); ++i) {
+        Napi::Value key = seq_names.Get(i);
+        Napi::Value sequence = sequences.Get(key);
+        if (key.IsString() && sequence.IsString()) {
 
-        if (key->IsString() && sequence->IsString()) {
-            String::Utf8Value utf8_key(key);
-            String::Utf8Value utf8_sequence(sequence);
-            AddSeq(&prMSeq, *utf8_key,*utf8_sequence);
+            char * utf8_key = strdup(key.As<Napi::String>().Utf8Value().c_str());
+            char * utf8_sequence = strdup(sequence.As<Napi::String>().Utf8Value().c_str());
+            AddSeq(&prMSeq, utf8_key,utf8_sequence);
         } else {
-            isolate->ThrowException(Exception::TypeError(
-        String::NewFromUtf8(isolate, "Invalid sequence")));
-            return;
+            Napi::TypeError::New(env, "Invalid sequence")
+                .ThrowAsJavaScriptException();
+            return env.Null();
         }
     }
 
     int rv;
     rv = Align(prMSeq, NULL, &rAlnOpts);
 
+    // NODE - converted
     if (rv) {
-        isolate->ThrowException(Exception::Error(
-        String::NewFromUtf8(isolate, "Error running clustal omega")));
-        // Throw Exception
-        return;
+        Napi::TypeError::New(env, "Error running clustal omega")
+            .ThrowAsJavaScriptException();
+        return env.Null();
     }
 
-    // Return the aligned results in a dict.
-    Local<Object> aligned = Object::New(isolate);
+    // NODE - converted Return the aligned results in a dict.
+    Napi::Object aligned = Napi::Object::New(env);
+
     int idx;
     for (idx = 0; idx < prMSeq->nseqs; idx++) {
         const char *key = prMSeq->sqinfo[idx].name;
         const char *seq = prMSeq->seq[idx];
-        aligned->Set(String::NewFromUtf8(isolate,key),String::NewFromUtf8(isolate,seq));
+        aligned.Set(Napi::String::New(env,key),Napi::String::New(env,seq));
     }
-    args.GetReturnValue().Set(aligned);
+    return aligned;
 }
 
-void init(Local<Object> exports) {
-  NODE_SET_METHOD(exports, "clustalo", Clustalo);
+Napi::Object Init(Napi::Env env, Napi::Object exports) {
+  exports.Set(Napi::String::New(env, "clustalo"),Napi::Function::New(env, Clustalo));
+  return exports;
 }
 
-NODE_MODULE(clustalo, init)
+NODE_API_MODULE(clustalo, Init)
 
 }  // namespace clustal

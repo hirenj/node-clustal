@@ -25,15 +25,15 @@ describe('clustalo', function() {
     it('should do an alignment', function () {
       var clustal = require('..');
       var result = clustal.clustalo({'foo' : 'MMMNMMM', 'bar' : 'MMM'},{});
-      assert.equal('MMMNMMM', result.foo);
-      assert.equal('----MMM', result.bar);
+      assert.equal(result.foo,'MMMNMMM');
+      assert.equal(result.bar,'----MMM');
     });
     it('should alignment more than two sequences', function () {
       var clustal = require('..');
       var result = clustal.clustalo({'foo' : 'MMMNMMM', 'bar' : 'MMM', 'baz' : 'MMMM'},{ sequenceType : clustal.SEQTYPE_PROTEIN });
-      assert.equal('MMMNMMM', result.foo);
-      assert.equal('----MMM', result.bar);
-      assert.equal('MM---MM', result.baz);
+      assert.equal(result.foo,'MMMNMMM');
+      assert.equal(result.bar,'----MMM');
+      assert.equal(result.baz,'MM---MM');
     });
 
   });
