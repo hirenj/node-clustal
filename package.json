@@ -14,12 +14,12 @@
     "remote_path": "./{name}/v{version}"
   },
   "dependencies": {
-    "node-addon-api": "*",
     "node-pre-gyp": "^0.6.39"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "node-addon-api": "*",
     "chai": "^3.5.0",
     "mocha": "^2.4.5",
     "node-pre-gyp": "^0.6.27"
