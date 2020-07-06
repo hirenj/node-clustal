@@ -1,7 +1,4 @@
-var binary = require('node-pre-gyp');
-var path = require('path');
-var binding_path = binary.find(path.resolve(path.join(__dirname,'./package.json')));
-var binding = require(binding_path);
+const binding = require('node-gyp-build')(__dirname);
 binding.SEQTYPE_UNKNOWN = 0;
 binding.SEQTYPE_PROTEIN = 1;
 binding.SEQTYPE_RNA = 2;

@@ -14,14 +14,14 @@
     "remote_path": "./{name}/v{version}"
   },
   "dependencies": {
-    "node-pre-gyp": "^0.6.39"
+    "node-gyp-build": "^4.2.2"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "node-addon-api": "*",
     "chai": "^3.5.0",
     "mocha": "^2.4.5",
-    "node-pre-gyp": "^0.6.27"
+    "node-addon-api": "*",
+    "prebuildify": "^4.0.0"
   }
 }
