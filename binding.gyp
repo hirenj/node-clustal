@@ -14,9 +14,9 @@
         "libraries": [ "-lclustalo" ],
       }],
       ],
-      "cflags" : [ "-fopenmp"],
+      "cflags" : [],
       "link_settings" : {
-      	"ldflags" : [ "-fopenmp" ]
+        "ldflags" : []
       }
     }
   ]

@@ -19,7 +19,7 @@ before_install:
 - curl -O 'https://node-lambda.s3.amazonaws.com/clustalo/clustal-omega-1.2.4.tar.gz'
 - tar -zxvf clustal-omega-1.2.4.tar.gz
 - cd clustal-omega-1.2.4
-- ./configure --with-pic --with-openmp
+- ./configure --with-pic --without-openmp
 - make clean && make && sudo make install
 - cd ..
 - COMMIT_MESSAGE=$(git show -s --format=%B $TRAVIS_COMMIT | tr -d '\n')
